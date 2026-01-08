@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ShopEase Luxury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+         :root {
+            --bg: #020617;
+            --primary: #38bdf8;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        /* NAV */
+        
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        nav h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        /* HERO - RESTORED IMAGE RIGHT */
+        /* Updated Hero Styling */
+        
+        .hero {
+            display: flex;
+            align-items: center;
+            padding: 80px 8%;
+            min-height: 85vh;
+            gap: 50px;
+        }
+        
+        .hero-text {
+            flex: 1;
+            /* Takes up 40% space */
+        }
+        
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            /* This makes the gradient look premium and fixes the error */
+            display: inline-block;
+            background: linear-gradient(to right, #ffffff, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #38bdf8;
+            /* Fallback color for old browsers */
+        }
+        
+        .hero-text p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+        
+        .hero-image {
+            flex: 1.5;
+            /* Increased ratio to give image more width (60% space) */
+            text-align: right;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            /* Now fills the 1.5 flex container */
+            max-width: 750px;
+            /* Increased from 500px to allow it to be much larger */
+            border-radius: 30px;
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.25);
+            transition: transform 0.5s ease;
+        }
+        
+        .hero-image img:hover {
+            transform: scale(1.02);
+        }
+        /* SEARCH/FILTER */
+        
+        #searchContainer {
+            display: none;
+            padding: 20px 8% 0;
+        }
+        
+        #shopSearchBar {
+            width: 100%;
+            padding: 15px 25px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: #fff;
+            outline: none;
+        }
+        /* STYLISH LOGIN MODAL */
+        
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .modal-box {
+            background: #0f172a;
+            padding: 50px 40px;
+            border-radius: 30px;
+            width: 420px;
+            border: 1px solid var(--primary);
+            text-align: center;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+        }
+        
+        .modal-box h2 {
+            font-family: 'Playfair Display';
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .modal-box input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: #fff;
+            text-align: center;
+        }
+        /* ADMIN - RESTORED ADD PRODUCT CARD */
+        
+        #adminSubNav {
+            display: none;
+            background: #000;
+            padding: 15px 8%;
+            justify-content: center;
+            gap: 30px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        #adminSubNav a {
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        
+        .admin-view {
+            display: none;
+            padding: 40px 8%;
+        }
+        
+        .add-card {
+            max-width: 800px;
+            margin: auto;
+            background: #0f172a;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+        
+        .add-card input,
+        .add-card select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #fff;
+            border-radius: 10px;
+        }
+        /* BUTTONS & CARDS */
+        
+        .btn-buy {
+            padding: 12px 25px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #000;
+        }
+        
+        .p-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .p-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 20px;
+            position: relative;
+            transition: 0.3s;
+        }
+        
+        .p-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+        
+        .like-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .like-btn.active {
+            color: #ef4444;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th {
+            background: #fff;
+            color: #000;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #222;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h2 onclick="location.reload()">ShopEase.</h2>
+        <div class="nav-links">
+            <span id="userStatus">Hello Guest 👋</span>
+            <a id="wishLink" style="display:none" onclick="showWishlist()">Wishlist ❤️</a>
+            <a id="cartLink" style="display:none" onclick="openOrder()">Cart (<span id="cartCount">0</span>)</a>
+            <a id="logoutLink" style="display:none; color:#ef4444;" onclick="location.reload()">Logout</a>
+            <button class="btn-buy" id="loginBtn" onclick="openModal('loginModal')">Login</button>
+        </div>
+    </nav>
+
+    <div id="adminSubNav">
+        <a onclick="switchAdmin('Inventory')">All Products</a>
+        <a onclick="switchAdmin('Add')">Add Products</a>
+        <a onclick="switchAdmin('Orders')">View Orders</a>
+        <a onclick="switchAdmin('Customers')">Registered Customers</a>
+    </div>
+
+    <div id="searchContainer">
+        <input type="text" id="shopSearchBar" placeholder="Search for products (Mobiles, Jewelry...)" onkeyup="filterProducts()">
+    </div>
+
+    <section class="hero" id="heroSec">
+        <div class="hero-text">
+            <h1>Luxury <br> Collection.</h1>
+            <p>Explore 50+ Premium Items. Hand-picked for you.</p>
+            <p>All you need, one click away 🛒</p>
+            <button class="btn-buy" style="margin-top:20px; padding: 15px 40px; font-size: 1.1rem;" onclick="openModal('loginModal')">Explore Now 🚀</button>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200">
+        </div>
+    </section>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-box">
+            <h2>Identity</h2>
+            <input type="text" id="loginName" placeholder="Enter Username">
+            <p style="font-size: 0.7rem; color: #94a3b8; margin-bottom:10px;">(Use 'admin' for dashboard)</p>
+            <button class="btn-buy" style="width:100%" onclick="handleLogin()">Login / Register</button>
+            <p onclick="closeModals()" style="cursor:pointer; margin-top:15px; opacity:0.5">Close</p>
+        </div>
+    </div>
+
+    <div class="modal" id="orderModal">
+        <div class="modal-box">
+            <h2>Your Cart</h2>
+            <div id="orderList" style="text-align:left; margin:20px 0; max-height:200px; overflow-y:auto"></div>
+            <button class="btn-buy" style="width:100%" onclick="openModal('payModal')">Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal" id="payModal">
+        <div class="modal-box">
+            <h2>Payment</h2>
+            <input type="text" placeholder="Card Number">
+            <button class="btn-buy" style="width:100%" onclick="alert('Success!'); location.reload();">Pay Now</button>
+        </div>
+    </div>
+
+    <div id="adminInventory" class="admin-view">
+        <h1>Inventory</h1>
+        <table id="adminTable"></table>
+    </div>
+
+    <div id="adminAdd" class="admin-view">
+        <h1>Add Product</h1>
+        <div class="add-card">
+            <input type="text" id="newPName" placeholder="Product Name">
+            <input type="number" id="newPPrice" placeholder="Price">
+            <select id="newPCat">
+            <option value="Mobile">Mobile</option>
+            <option value="Saree">Saree</option>
+            <option value="Jewelry">Jewelry</option>
+        </select>
+            <input type="text" id="newPImg" placeholder="Image URL">
+            <button class="btn-buy" style="width:100%" onclick="addProduct()">Publish Product</button>
+        </div>
+    </div>
+
+    <div id="adminOrders" class="admin-view">
+        <h1>Orders</h1>
+        <p>No orders yet.</p>
+    </div>
+    <div id="adminCustomers" class="admin-view">
+        <h1>Customers</h1>
+        <table id="custTable"></table>
+    </div>
+
+    <div id="shopArea" style="display:none; padding: 30px 8%;">
+        <h2 id="viewTitle" style="font-family:'Playfair Display'; font-size:2rem;">Shop</h2>
+        <div class="p-grid" id="productGrid"></div>
+    </div>
+
+    <script>
+        let allProducts = JSON.parse(localStorage.getItem("pro_db")) || [];
+        let wishlist = JSON.parse(localStorage.getItem("wishlist_db")) || [];
+        let customers = JSON.parse(localStorage.getItem("final_customers")) || [];
+        let cart = [];
+
+        function openModal(id) {
+            closeModals();
+            document.getElementById(id).style.display = "flex";
+        }
+
+        function closeModals() {
+            document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
+        }
+
+        function handleLogin() {
+            let val = document.getElementById("loginName").value;
+            if (!val) return;
+            if (val.toLowerCase() === 'admin') {
+                document.getElementById("userStatus").innerText = "Admin 👋";
+                document.getElementById("adminSubNav").style.display = "flex";
+                document.getElementById("heroSec").style.display = "none";
+                document.getElementById("logoutLink").style.display = "block";
+                switchAdmin('Inventory');
+            } else {
+                if (!customers.some(c => c.name === val)) {
+                    customers.push({
+                        name: val,
+                        date: new Date().toLocaleDateString()
+                    });
+                    localStorage.setItem("final_customers", JSON.stringify(customers));
+                }
+                document.getElementById("userStatus").innerText = val + " 👋";
+                document.getElementById("shopArea").style.display = "block";
+                document.getElementById("searchContainer").style.display = "block";
+                document.getElementById("heroSec").style.display = "none";
+                document.getElementById("wishLink").style.display = "block";
+                document.getElementById("cartLink").style.display = "block";
+                document.getElementById("logoutLink").style.display = "block";
+                document.getElementById("loginBtn").style.display = "none";
+                renderProducts(allProducts);
+            }
+            closeModals();
+        }
+
+        function renderProducts(data) {
+            document.getElementById("productGrid").innerHTML = data.map(p => `
+            <div class="p-card">
+                <i class="fa fa-heart like-btn ${wishlist.includes(p.id)?'active':''}" onclick="toggleLike(${p.id}, this)"></i>
+                <img src="${p.img || 'https://via.placeholder.com/200'}">
+                <h4 style="margin:10px 0 5px">${p.name}</h4>
+                <p style="color:var(--primary); font-weight:700">₹${p.price}</p>
+                <button class="btn-buy" style="width:100%; margin-top:10px; font-size:0.8rem" onclick="addToCart(${p.id})">Add to Cart</button>
+            </div>
+        `).join("");
+        }
+
+        function addToCart(id) {
+            cart.push(allProducts.find(p => p.id === id));
+            document.getElementById("cartCount").innerText = cart.length;
+            alert("Added to cart!");
+        }
+
+        function openOrder() {
+            document.getElementById("orderList").innerHTML = cart.map(i => `<p>${i.name} - ₹${i.price}</p>`).join("");
+            openModal('orderModal');
+        }
+
+        function filterProducts() {
+            let q = document.getElementById("shopSearchBar").value.toLowerCase();
+            renderProducts(allProducts.filter(p => p.name.toLowerCase().includes(q)));
+        }
+
+        function switchAdmin(view) {
+            document.querySelectorAll(".admin-view").forEach(v => v.style.display = "none");
+            document.getElementById("admin" + view).style.display = "block";
+            if (view === 'Inventory') {
+                document.getElementById("adminTable").innerHTML = `<tr><th>Name</th><th>Price</th><th>Action</th></tr>` +
+                    allProducts.map(p => `<tr><td><b>${p.name}</b></td><td>₹${p.price}</td><td><button onclick="deleteP(${p.id})" style="color:red; background:none; border:none; cursor:pointer;">DEL</button></td></tr>`).join("");
+            }
+            if (view === 'Customers') {
+                document.getElementById("custTable").innerHTML = `<tr><th>Name</th><th>Date</th></tr>` +
+                    customers.map(c => `<tr><td>${c.name}</td><td>${c.date}</td></tr>`).join("");
+            }
+        }
+
+        function addProduct() {
+            let n = document.getElementById("newPName").value;
+            let p = document.getElementById("newPPrice").value;
+            let c = document.getElementById("newPCat").value;
+            let i = document.getElementById("newPImg").value;
+            if (n && p) {
+                allProducts.unshift({
+                    id: Date.now(),
+                    name: n,
+                    price: p,
+                    cat: c,
+                    img: i
+                });
+                localStorage.setItem("pro_db", JSON.stringify(allProducts));
+                alert("Added!");
+                switchAdmin('Inventory');
+            }
+        }
+
+        function deleteP(id) {
+            allProducts = allProducts.filter(p => p.id !== id);
+            localStorage.setItem("pro_db", JSON.stringify(allProducts));
+            switchAdmin('Inventory');
+        }
+
+        function toggleLike(id, el) {
+            wishlist.includes(id) ? wishlist = wishlist.filter(x => x !== id) : wishlist.push(id);
+            localStorage.setItem("wishlist_db", JSON.stringify(wishlist));
+            el.classList.toggle('active');
+        }
+
+        function showWishlist() {
+            renderProducts(allProducts.filter(p => wishlist.includes(p.id)));
+        }
+    </script>
+</body>
+
+</html>
