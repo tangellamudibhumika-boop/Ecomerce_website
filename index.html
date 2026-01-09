@@ -29,7 +29,6 @@
             overflow-x: hidden;
         }
 
-        /* NAV */
         nav {
             position: sticky;
             top: 0;
@@ -62,7 +61,6 @@
             font-size: 0.9rem;
         }
 
-        /* HERO STYLING */
         .hero {
             display: flex;
             align-items: center;
@@ -71,9 +69,7 @@
             gap: 50px;
         }
         
-        .hero-text {
-            flex: 1;
-        }
+        .hero-text { flex: 1; }
         
         .hero-text h1 {
             font-family: 'Playfair Display', serif;
@@ -107,11 +103,6 @@
             transition: transform 0.5s ease;
         }
         
-        .hero-image img:hover {
-            transform: scale(1.02);
-        }
-
-        /* SEARCH */
         #searchContainer {
             display: none;
             padding: 20px 8% 0;
@@ -127,7 +118,6 @@
             outline: none;
         }
 
-        /* MODALS */
         .modal {
             position: fixed;
             inset: 0;
@@ -146,13 +136,6 @@
             width: 420px;
             border: 1px solid var(--primary);
             text-align: center;
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
-        }
-        
-        .modal-box h2 {
-            font-family: 'Playfair Display';
-            font-size: 2.5rem;
-            margin-bottom: 15px;
         }
         
         .modal-box input {
@@ -163,10 +146,8 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             color: #fff;
-            text-align: center;
         }
 
-        /* ADMIN */
         #adminSubNav {
             display: none;
             background: #000;
@@ -174,14 +155,6 @@
             justify-content: center;
             gap: 30px;
             border-bottom: 2px solid var(--primary);
-        }
-        
-        #adminSubNav a {
-            color: #fff;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
         }
         
         .admin-view {
@@ -196,7 +169,6 @@
             padding: 40px;
             border-radius: 20px;
             border: 2px solid var(--primary);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
         
         .add-card input, .add-card select {
@@ -204,12 +176,10 @@
             padding: 15px;
             margin-bottom: 15px;
             background: #1e293b;
-            border: 1px solid #334155;
             color: #fff;
             border-radius: 10px;
         }
 
-        /* PRODUCT CARDS */
         .btn-buy {
             padding: 12px 25px;
             background: var(--primary);
@@ -233,7 +203,6 @@
             padding: 20px;
             border-radius: 20px;
             position: relative;
-            transition: 0.3s;
         }
         
         .p-card img {
@@ -252,9 +221,7 @@
             color: rgba(255, 255, 255, 0.2);
         }
         
-        .like-btn.active {
-            color: #ef4444;
-        }
+        .like-btn.active { color: #ef4444; }
         
         table {
             width: 100%;
@@ -262,17 +229,8 @@
             margin-top: 20px;
         }
         
-        th {
-            background: #fff;
-            color: #000;
-            padding: 15px;
-            text-align: left;
-        }
-        
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #222;
-        }
+        th { background: #fff; color: #000; padding: 15px; text-align: left; }
+        td { padding: 15px; border-bottom: 1px solid #222; }
     </style>
 </head>
 
@@ -374,17 +332,31 @@
     </div>
 
     <script>
-        // DEFAULT DATA FIX:
-        const defaultData = [
-            {id: 1, name: "Luxury iPhone", price: "129000", cat: "Mobile", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"},
-            {id: 2, name: "Silk Banarasi Saree", price: "15000", cat: "Saree", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500"},
-            {id: 3, name: "Diamond Necklace", price: "250000", cat: "Jewelry", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500"}
+        // --- 50 PRODUCTS AUTOMATIC GENERATOR ---
+        const categories = ["Mobile", "Saree", "Jewelry", "Watch", "Handbag"];
+        const images = [
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500",
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500",
+            "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500",
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500"
         ];
 
-        let allProducts = JSON.parse(localStorage.getItem("pro_db"));
-        if (!allProducts || allProducts.length === 0) {
-            allProducts = defaultData;
+        let autoProducts = [];
+        for (let i = 1; i <= 50; i++) {
+            let idx = i % categories.length;
+            autoProducts.push({
+                id: i,
+                name: "Premium " + categories[idx] + " v" + i,
+                price: (Math.floor(Math.random() * 800) + 200) * 100,
+                cat: categories[idx],
+                img: images[idx]
+            });
         }
+
+        // Check if database exists, if not use the 50 products
+        let allProducts = JSON.parse(localStorage.getItem("pro_db")) || autoProducts;
+        if (allProducts.length === 0) allProducts = autoProducts;
 
         let wishlist = JSON.parse(localStorage.getItem("wishlist_db")) || [];
         let customers = JSON.parse(localStorage.getItem("final_customers")) || [];
@@ -430,7 +402,7 @@
             document.getElementById("productGrid").innerHTML = data.map(p => `
                 <div class="p-card">
                     <i class="fa fa-heart like-btn ${wishlist.includes(p.id)?'active':''}" onclick="toggleLike(${p.id}, this)"></i>
-                    <img src="${p.img || 'https://via.placeholder.com/200'}">
+                    <img src="${p.img}">
                     <h4 style="margin:10px 0 5px">${p.name}</h4>
                     <p style="color:var(--primary); font-weight:700">₹${p.price}</p>
                     <button class="btn-buy" style="width:100%; margin-top:10px; font-size:0.8rem" onclick="addToCart(${p.id})">Add to Cart</button>
@@ -452,7 +424,7 @@
 
         function filterProducts() {
             let q = document.getElementById("shopSearchBar").value.toLowerCase();
-            renderProducts(allProducts.filter(p => p.name.toLowerCase().includes(q)));
+            renderProducts(allProducts.filter(p => p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)));
         }
 
         function switchAdmin(view) {
